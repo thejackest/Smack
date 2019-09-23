@@ -1,6 +1,7 @@
 package com.jackest.smack
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
@@ -33,6 +34,15 @@ class MainActivity : AppCompatActivity() {
         }else{
             super.onBackPressed()
         }
+    }
+    fun loginBtnNavClicked(view: View){
+
+    }
+    fun addChannelClicked(view: View){
+
+    }
+    fun sendMessageBtnClicked(view: View){
+
     }
 }
 
