@@ -9,6 +9,21 @@
     android:gravity="bottom"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
+    <Button
+        android:id="@+id/loginBtnNavHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/transparent"
+        android:onClick="loginBtnNavClicked"
+        android:text="@string/login"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="LOGIN" />
+
     <ImageView
         android:id="@+id/userImageNavHeader"
         android:layout_width="70dp"
@@ -28,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Jackest G"
+        android:text="@string/jackest_g"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@android:color/white"
         app:layout_constraintStart_toEndOf="@+id/userImageNavHeader"
@@ -40,25 +55,11 @@
         android:layout_width="183dp"
         android:layout_height="23dp"
         android:layout_marginStart="8dp"
-        android:text="jackest.gong@bluelab.com"
+        android:text="@string/jackest_gong_bluelab_com"
         android:textColor="@android:color/white"
         app:layout_constraintStart_toEndOf="@+id/userImageNavHeader"
         app:layout_constraintTop_toBottomOf="@+id/userNameNavHeader"
         tools:text="jackest.gong@bluelab.com" />
-
-    <Button
-        android:id="@+id/loginBtnNavHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="8dp"
-        android:background="@android:color/transparent"
-        android:onClick="loginBtnNavClicked"
-        android:textAlignment="viewStart"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="LOGIN" />
 
     <ImageButton
         android:id="@+id/addChannelBtn"
@@ -72,6 +73,7 @@
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/addchannelbutton" />
+        app:srcCompat="@drawable/addchannelbutton"
+        android:contentDescription="@string/addchannel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

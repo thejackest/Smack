@@ -1,5 +1,6 @@
 package com.jackest.smack
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -19,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         val toggle  = ActionBarDrawerToggle(
-            this, drawer_layout, toolbar, "Open navigation drawer","Close navigation drawer")
+            this, drawer_layout, toolbar, R.string.navigation_drawer_open,R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 //        val fab: FloatingActionButton = findViewById(R.id.fab)
@@ -36,7 +37,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
     fun loginBtnNavClicked(view: View){
-
+        val loginIntent = Intent(this, LoginActivity::class.java)
+        startActivity(loginIntent)
     }
     fun addChannelClicked(view: View){
 
