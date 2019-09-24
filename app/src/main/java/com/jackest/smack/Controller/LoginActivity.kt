@@ -12,11 +12,12 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
     }
-    fun sendMessageBtnClicked(view: View){
+    fun loginLoginBtnClicked(view: View){
 
     }
     fun loginCreateClicked(view: View){
         val createUserIntent = Intent(this, CreateUserActivity::class.java)
         startActivity(createUserIntent)
+        finish()
     }
 }

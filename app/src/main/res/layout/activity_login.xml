@@ -42,7 +42,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:background="@color/colorPrimary"
-        android:onClick="sendMessageBtnClicked"
+        android:onClick="loginLoginBtnClicked"
         android:text="@string/login"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
