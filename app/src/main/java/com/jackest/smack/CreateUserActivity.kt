@@ -40,7 +40,7 @@ class CreateUserActivity : AppCompatActivity() {
         val savedR = r.toDouble()/255
         val savedG = g.toDouble()/255
         val savedB = b.toDouble()/255
-        avatarColor = "[$savedR,$savedG,$savedB,1]"
+        avatarColor = "[$savedR,$savedG,$savedB,1]"//for mac
 
     }
     fun createUserClicked(view: View){
