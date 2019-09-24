@@ -64,6 +64,7 @@ class CreateUserActivity : AppCompatActivity() {
                                 println(UserDataService.avatarName)
                                 println(UserDataService.avatarColor)
                                 println(UserDataService.name)
+                                finish()
                             }
                         }
                     }
