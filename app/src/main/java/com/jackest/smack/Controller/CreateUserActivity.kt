@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import com.jackest.smack.R
 import com.jackest.smack.Services.AuthService
+import com.jackest.smack.Services.UserDataService
 import kotlinx.android.synthetic.main.activity_create_user.*
 import java.util.*
 
@@ -58,6 +59,13 @@ class CreateUserActivity : AppCompatActivity() {
                     if (loginSuccess){
                         println(AuthService.authToken)
                         println(AuthService.userEmail)
+                        AuthService.createUser(this,userName, email, userAvatar,avatarColor){createSuccess ->
+                            if(createSuccess){
+                                println(UserDataService.avatarName)
+                                println(UserDataService.avatarColor)
+                                println(UserDataService.name)
+                            }
+                        }
                     }
                 }
             }
