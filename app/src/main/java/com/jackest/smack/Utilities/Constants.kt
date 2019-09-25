@@ -12,5 +12,6 @@ const val URL_CREATE_USER = "${BASE_URL}account/add"
 
 const val URL_GET_USER = "${BASE_URL}user/byEmail"
 
+const val URL_GET_CHANNELS = "${BASE_URL}channel"
 //Broadcast constants
 const val BROADCAST_USER_DATA_CHANGE = "BROADCAST_USER_DATA_CHANGE"
