@@ -13,7 +13,7 @@ import org.json.*
 
 object MessageService {
     val channels = ArrayList<Channel>()
-    fun getChannel(context: Context, complete: (Boolean) -> Unit){
+    fun getChannel( complete: (Boolean) -> Unit){
         //very important to use array rather than object
         val channelsReq = object : JsonArrayRequest(Method.GET, URL_GET_CHANNELS, null, Response.Listener {    response->
             try {
