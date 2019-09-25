@@ -95,7 +95,7 @@ class MainActivity : AppCompatActivity() {
                 userImageNavHeader.setBackgroundColor(UserDataService.returnAvatarColor(UserDataService.avatarColor))//set background color through a function in userDataService
                 loginBtnNavHeader.text = "Logout"
 
-                MessageService.getChannel(context){ complete->
+                MessageService.getChannel(){ complete->
                     if (complete){
                         channelAdapter.notifyDataSetChanged()//tell adapter data changed to reload the data
                     }else{
