@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity() {
 
     private val onNewChannel = Emitter.Listener { args ->
         //println(args[0] as String)
-        runOnUiThread{
+        runOnUiThread{//base on the database
             val channelName = args[0] as String
             val channelDes = args[1] as String
             val channelId = args[2] as String
