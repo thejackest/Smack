@@ -15,6 +15,8 @@ import com.jackest.smack.R
 import com.jackest.smack.Services.AuthService
 import com.jackest.smack.Services.UserDataService
 import com.jackest.smack.Utilities.BROADCAST_USER_DATA_CHANGE
+import com.jackest.smack.Utilities.SOCKET_URL
+import io.socket.client.IO
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
@@ -22,7 +24,7 @@ import kotlinx.android.synthetic.main.nav_header_main.*
 class MainActivity : AppCompatActivity() {
 
 //    private lateinit var appBarConfiguration: AppBarConfiguration
-
+    val socket = IO.socket(SOCKET_URL)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -45,6 +47,24 @@ class MainActivity : AppCompatActivity() {
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                .setAction("Action", null).show() //similar to toast, pop up message
     }
+
+    override fun onResume() {
+        LocalBroadcastManager.getInstance(this).registerReceiver(userDataChangeReceiver, IntentFilter(
+            BROADCAST_USER_DATA_CHANGE))
+        socket.connect()
+        super.onResume()
+    }
+
+    override fun onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(userDataChangeReceiver)
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        socket.disconnect()
+        super.onDestroy()
+    }
+
     private val userDataChangeReceiver = object: BroadcastReceiver(){
         override fun onReceive(context: Context?, intent: Intent?) {
             //what we want to happen whne the broadcast is sent

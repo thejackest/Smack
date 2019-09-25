@@ -1,5 +1,6 @@
 package com.jackest.smack.Utilities
 
+const val SOCKET_URL = ""
 const val BASE_URL = "" //URL in HEROKU
 //or if its for the local host
 
