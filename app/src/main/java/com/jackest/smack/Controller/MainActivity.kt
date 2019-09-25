@@ -86,24 +86,22 @@ class MainActivity : AppCompatActivity() {
             val dialogView = layoutInflater.inflate(R.layout.add_channel_dialog, null)
             builder
                 .setView(dialogView)
-                .setPositiveButton("Add"){   dialogInterface, i ->
+                .setPositiveButton("Add") { dialogInterface, i ->
                     //perform some logic when clicked
                     val nameField = dialogView.findViewById<EditText>(R.id.addChannelNameTxt)
                     val desField = dialogView.findViewById<EditText>(R.id.addChannelDesTxt)
                     val channelNmae = nameField.text.toString()
                     val channelDes = desField.text.toString()
                     //create channel with the channel name and description
-                    hideKeyboard()
                 }
                 .setNegativeButton("Cancel"){   dialogInterface, i ->
                     //cancel and close the dialog
-                    hideKeyboard()
                 }
                 .show()
         }
     }
     fun sendMessageBtnClicked(view: View){
-
+        hideKeyboard()
     }
     fun hideKeyboard(){
         val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
