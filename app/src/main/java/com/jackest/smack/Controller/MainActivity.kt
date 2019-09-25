@@ -11,12 +11,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.jackest.smack.Model.Channel
 import com.jackest.smack.R
 import com.jackest.smack.Services.AuthService
+import com.jackest.smack.Services.MessageService
 import com.jackest.smack.Services.UserDataService
 import com.jackest.smack.Utilities.BROADCAST_USER_DATA_CHANGE
 import com.jackest.smack.Utilities.SOCKET_URL
 import io.socket.client.IO
+import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
@@ -42,6 +45,9 @@ class MainActivity : AppCompatActivity() {
         LocalBroadcastManager.getInstance(this).registerReceiver(userDataChangeReceiver, IntentFilter(
             BROADCAST_USER_DATA_CHANGE))
 
+        socket.connect()
+        socket.on("channelCreated",onNewChannel)
+        
 //        val fab: FloatingActionButton = findViewById(R.id.fab)
 //        fab.setOnClickListener { view ->
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -51,7 +57,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         LocalBroadcastManager.getInstance(this).registerReceiver(userDataChangeReceiver, IntentFilter(
             BROADCAST_USER_DATA_CHANGE))
-        socket.connect()
+
         super.onResume()
     }
 
@@ -67,7 +73,7 @@ class MainActivity : AppCompatActivity() {
 
     private val userDataChangeReceiver = object: BroadcastReceiver(){
         override fun onReceive(context: Context?, intent: Intent?) {
-            //what we want to happen whne the broadcast is sent
+            //what we want to happen when the broadcast is sent
             if(AuthService.isLoggedin){
                 userNameNavHeader.text = UserDataService.name
                 userEmailNavHeader.text = UserDataService.email
@@ -100,6 +106,22 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+    private val onNewChannel = Emitter.Listener { args ->
+        //println(args[0] as String)
+        runOnUiThread{
+            val channelName = args[0] as String
+            val channelDes = args[1] as String
+            val channelId = args[2] as String
+
+            val newChannel  = Channel(channelName, channelDes, channelId)
+            MessageService.channels.add(newChannel)
+            println(newChannel.name)
+            println(newChannel.des)
+            println(newChannel.id)
+        }
+    }
+
     fun addChannelClicked(view: View){
         if (AuthService.isLoggedin){
             val builder = AlertDialog.Builder(this)
