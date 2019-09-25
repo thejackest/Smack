@@ -7,12 +7,15 @@ import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
 import com.jackest.smack.Controller.App
 import com.jackest.smack.Model.Channel
+import com.jackest.smack.Model.Message
 import com.jackest.smack.Utilities.URL_GET_CHANNELS
 import org.json.*
 
 
 object MessageService {
     val channels = ArrayList<Channel>()
+    val messages = ArrayList<Message>()
+
     fun getChannel( complete: (Boolean) -> Unit){
         //very important to use array rather than object
         val channelsReq = object : JsonArrayRequest(Method.GET, URL_GET_CHANNELS, null, Response.Listener {    response->

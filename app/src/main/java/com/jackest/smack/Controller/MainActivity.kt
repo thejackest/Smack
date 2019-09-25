@@ -13,6 +13,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.jackest.smack.Model.Channel
+import com.jackest.smack.Model.Message
 import com.jackest.smack.R
 import com.jackest.smack.Services.AuthService
 import com.jackest.smack.Services.MessageService
@@ -64,6 +65,7 @@ class MainActivity : AppCompatActivity() {
 
         socket.connect()
         socket.on("channelCreated",onNewChannel)
+        socket.on("messageCreated",onNewMessage)
 
 //        val fab: FloatingActionButton = findViewById(R.id.fab)
 //        fab.setOnClickListener { view ->
@@ -178,8 +180,30 @@ class MainActivity : AppCompatActivity() {
                 .show()
         }
     }
+    private val onNewMessage = Emitter.Listener { args->
+        runOnUiThread {
+            val msgBody = args[0] as String
+            val channelId = args[2] as String
+            val userName = args[3] as String
+            val userAvatar =args[4] as String
+            val userColor = args[5] as String
+            val id = args[6] as String
+            val time = args[7] as String
+
+            val newMessage = Message(msgBody,userName, channelId, userAvatar, userColor, id, time)
+            MessageService.messages.add(newMessage)
+        }
+    }
+
     fun sendMessageBtnClicked(view: View){
-        hideKeyboard()
+        if(App.sharedPreferences.isLoggedIn&& messageTextField.text.isNotEmpty()&&selectedChannel != null){
+            val userId = UserDataService.id
+            val channelid = selectedChannel!!.id
+            socket.emit("newMessage", messageTextField.text.toString(), userId,channelid, UserDataService.name, UserDataService.avatarName, UserDataService.avatarColor)
+            messageTextField.text.clear()
+            hideKeyboard()
+        }
+
     }
     fun hideKeyboard(){
         val inputManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
