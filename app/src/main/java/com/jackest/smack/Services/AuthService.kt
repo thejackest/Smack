@@ -9,15 +9,16 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.jackest.smack.Controller.App
 import com.jackest.smack.Utilities.*
 import org.json.JSONException
 import kotlin.collections.HashMap
 
 object AuthService {
 
-    var isLoggedin = false
-    var userEmail = ""
-    var authToken = ""
+//    var isLoggedin = false
+//    var userEmail = ""
+//    var authToken = ""
 
     fun regisiterUser(context: Context, email:String, password:String, complete:(Boolean)->Unit){
 
@@ -48,7 +49,7 @@ object AuthService {
 
         }
         //add to queue(volley)
-        Volley.newRequestQueue(context).add(registerReq)
+        App.sharedPreferences.requestQueue.add(registerReq)
     }
     fun loginUser(context: Context, email:String, password: String, complete: (Boolean) -> Unit){
 
@@ -62,9 +63,9 @@ object AuthService {
         val loginReq = object :JsonObjectRequest(Method.POST, URL_LOGIN,null, Response.Listener {response ->
 
             try{
-                userEmail = response.getString("user")//what the user actually inputs
-                authToken = response.getString("token")//value for the input
-                isLoggedin = true
+                App.sharedPreferences.userEmail = response.getString("user")//what the user actually inputs
+                App.sharedPreferences.authToken = response.getString("token")//value for the input
+                App.sharedPreferences.isLoggedIn = true
                 complete(true)
             }catch(e: JSONException){
                 Log.d("JSON","EXE:" +e.localizedMessage)
@@ -84,7 +85,7 @@ object AuthService {
                 return requestBody.toByteArray()
             }
         }
-        Volley.newRequestQueue(context).add(loginReq)
+        App.sharedPreferences.requestQueue.add(loginReq)
     }
     fun createUser(context:Context, name: String, email: String, avatarName: String, avatarColor: String, complete: (Boolean) -> Unit){
         //json body objects
@@ -120,15 +121,15 @@ object AuthService {
 
             override fun getHeaders(): MutableMap<String, String> {
                 val headers =  HashMap<String,String>()
-                headers.put("Authorization", "Bearer $authToken")
+                headers.put("Authorization", "Bearer ${App.sharedPreferences.authToken}")
                 return headers
             }
         }
-        Volley.newRequestQueue(context).add(createReq)
+        App.sharedPreferences.requestQueue.add(createReq)
     }
 
     fun findUserByEmail(context: Context, complete: (Boolean) -> Unit){
-        val finduUserReq = object : JsonObjectRequest(Method.GET,"$URL_GET_USER$userEmail", null, Response.Listener {response->
+        val finduUserReq = object : JsonObjectRequest(Method.GET,"$URL_GET_USER${App.sharedPreferences.userEmail}", null, Response.Listener {response->
             try{
                 UserDataService.name = response.getString("name")
                 UserDataService.email = response.getString("email")
@@ -152,10 +153,10 @@ object AuthService {
 
             override fun getHeaders(): MutableMap<String, String> {
                 val headers = HashMap<String, String>()
-                headers.put("Authorization","Bearer $authToken")
+                headers.put("Authorization","Bearer ${App.sharedPreferences.authToken}")
                 return headers
             }
         }
-        Volley.newRequestQueue(context).add(finduUserReq)
+        App.sharedPreferences.requestQueue.add(finduUserReq)
     }
 }

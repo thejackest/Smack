@@ -61,6 +61,10 @@ class MainActivity : AppCompatActivity() {
 //        fab.setOnClickListener { view ->
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                .setAction("Action", null).show() //similar to toast, pop up message
+
+        if(App.sharedPreferences.isLoggedIn){
+            AuthService.findUserByEmail(this){}
+        }
     }
 
     override fun onResume() {
@@ -83,7 +87,7 @@ class MainActivity : AppCompatActivity() {
     private val userDataChangeReceiver = object: BroadcastReceiver(){
         override fun onReceive(context: Context, intent: Intent?) {
             //what we want to happen when the broadcast is sent
-            if(AuthService.isLoggedin){
+            if(App.sharedPreferences.isLoggedIn){
                 userNameNavHeader.text = UserDataService.name
                 userEmailNavHeader.text = UserDataService.email
                 val resourceId = resources.getIdentifier(UserDataService.avatarName, "drawable", packageName)
@@ -110,7 +114,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
     fun loginBtnNavClicked(view: View){
-        if(AuthService.isLoggedin){
+        if(App.sharedPreferences.isLoggedIn){
             UserDataService.logout()
             userNameNavHeader.text = ""
             userEmailNavHeader.text = ""
@@ -138,7 +142,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun addChannelClicked(view: View){
-        if (AuthService.isLoggedin){
+        if (App.sharedPreferences.isLoggedIn){
             val builder = AlertDialog.Builder(this)
             val dialogView = layoutInflater.inflate(R.layout.add_channel_dialog, null)
             builder
