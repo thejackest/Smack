@@ -26,4 +26,6 @@
     <string name="profile">profile</string>
     <string name="create_user">CREATE USER</string>
     <string name="generate_background_color">generate Background Color</string>
+    <string name="channel_name">channel name</string>
+    <string name="channel_description">channel description</string>
 </resources>
