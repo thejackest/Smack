@@ -9,6 +9,7 @@ import com.jackest.smack.Controller.App
 import com.jackest.smack.Model.Channel
 import com.jackest.smack.Model.Message
 import com.jackest.smack.Utilities.URL_GET_CHANNELS
+import com.jackest.smack.Utilities.URL_MESSAGES
 import org.json.*
 
 
@@ -48,5 +49,50 @@ object MessageService {
             }
         }
         App.sharedPreferences.requestQueue.add(channelsReq)
+    }
+
+    fun getMessages(channelId: String, complete: (Boolean) -> Unit){
+        val url = "$URL_MESSAGES$channelId"
+        val messagesReq = object :JsonArrayRequest(Method.GET, url, null, Response.Listener { response->
+            clearMessage()
+            try{
+                for (x in 0 until response.length()){
+                    val message  = response.getJSONObject(x)
+                    val messageBody = message.getString("messageBody")
+                    val channelId = message.getString("channelId")
+                    val id = message.getString("_id")
+                    val userName = message.getString("userName")
+                    val userAvatar = message.getString("userAvatar")
+                    val userColor = message.getString("userAvatarColor")
+                    val time = message.getString("timeStamp")
+
+                    val newMessage = Message(messageBody, userName, channelId, userAvatar, userColor, id, time)
+                    this.messages.add(newMessage)
+                }
+            }catch(e:JSONException){
+                Log.d("ERROR", "EXC:"+e.localizedMessage)
+                complete(false)
+            }
+        }, Response.ErrorListener { error ->
+            Log.d("ERROR", "Could not receive messages")
+            complete(false)
+        }){
+            override fun getBodyContentType(): String {
+                return "application/json; charset=utf-8"
+            }
+
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers.put("Authorization", "Bearer ${App.sharedPreferences.authToken}")
+                return headers
+            }
+        }
+        App.sharedPreferences.requestQueue.add(messagesReq)
+    }
+    fun clearMessage(){
+        messages.clear()
+    }
+    fun clearChannel(){
+        channels.clear()
     }
 }

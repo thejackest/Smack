@@ -123,6 +123,17 @@ class MainActivity : AppCompatActivity() {
     fun updateWithChannel(){
         mainChannelName.text = "#${selectedChannel?.name}"
         //download messages from channel
+
+        if (selectedChannel!=null){
+            MessageService.getMessages(selectedChannel!!.id){
+                complete ->
+                if(complete){
+                    for (message in MessageService.messages){
+                        println(message.message)
+                    }
+                }
+            }
+        }
     }
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)){
@@ -148,14 +159,17 @@ class MainActivity : AppCompatActivity() {
 
     private val onNewChannel = Emitter.Listener { args ->
         //println(args[0] as String)
-        runOnUiThread{//base on the database
-            val channelName = args[0] as String
-            val channelDes = args[1] as String
-            val channelId = args[2] as String
+        if (App.sharedPreferences.isLoggedIn){
+            runOnUiThread{//base on the database
+                val channelName = args[0] as String
+                val channelDes = args[1] as String
+                val channelId = args[2] as String
 
-            val newChannel  = Channel(channelName, channelDes, channelId)
-            MessageService.channels.add(newChannel)
-           channelAdapter.notifyDataSetChanged()
+                val newChannel  = Channel(channelName, channelDes, channelId)
+                MessageService.channels.add(newChannel)
+                channelAdapter.notifyDataSetChanged()
+            }
+
         }
     }
 
@@ -181,18 +195,25 @@ class MainActivity : AppCompatActivity() {
         }
     }
     private val onNewMessage = Emitter.Listener { args->
-        runOnUiThread {
-            val msgBody = args[0] as String
-            val channelId = args[2] as String
-            val userName = args[3] as String
-            val userAvatar =args[4] as String
-            val userColor = args[5] as String
-            val id = args[6] as String
-            val time = args[7] as String
+        if (App.sharedPreferences.isLoggedIn){
+            runOnUiThread {
+                val channelId = args[2] as String
+                if (channelId ==selectedChannel?.id){
+                    val msgBody = args[0] as String
 
-            val newMessage = Message(msgBody,userName, channelId, userAvatar, userColor, id, time)
-            MessageService.messages.add(newMessage)
+                    val userName = args[3] as String
+                    val userAvatar =args[4] as String
+                    val userColor = args[5] as String
+                    val id = args[6] as String
+                    val time = args[7] as String
+
+                    val newMessage = Message(msgBody,userName, channelId, userAvatar, userColor, id, time)
+                    MessageService.messages.add(newMessage)
+                }
+
+            }
         }
+
     }
 
     fun sendMessageBtnClicked(view: View){
