@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.jackest.smack.Adapters.MessageAdapter
 import com.jackest.smack.Model.Channel
 import com.jackest.smack.Model.Message
 import com.jackest.smack.R
@@ -31,12 +33,18 @@ class MainActivity : AppCompatActivity() {
 
 //    private lateinit var appBarConfiguration: AppBarConfiguration
     lateinit var channelAdapter : ArrayAdapter<Channel>
+    lateinit var messageAdapter: MessageAdapter
     val socket = IO.socket(SOCKET_URL)
     var selectedChannel :Channel? = null
 
     private fun setupAdapters(){
         channelAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, MessageService.channels)
         channel_list.adapter = channelAdapter //then call the adapter in toggles
+
+        messageAdapter = MessageAdapter(this, MessageService.messages)
+        messageListView.adapter = messageAdapter
+        val layoutManager = LinearLayoutManager(this)
+        messageListView.layoutManager = layoutManager
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -128,8 +136,12 @@ class MainActivity : AppCompatActivity() {
             MessageService.getMessages(selectedChannel!!.id){
                 complete ->
                 if(complete){
-                    for (message in MessageService.messages){
-                        println(message.message)
+//                    for (message in MessageService.messages){
+//                            println(message.message)
+//                    }
+                    messageAdapter.notifyDataSetChanged()
+                    if(messageAdapter.itemCount > 0){
+                        messageListView.smoothScrollToPosition(messageAdapter.itemCount -1)
                     }
                 }
             }
@@ -145,6 +157,8 @@ class MainActivity : AppCompatActivity() {
     fun loginBtnNavClicked(view: View){
         if(App.sharedPreferences.isLoggedIn){
             UserDataService.logout()
+            channelAdapter.notifyDataSetChanged()
+            messageAdapter.notifyDataSetChanged()
             userNameNavHeader.text = ""
             userEmailNavHeader.text = ""
             userImageNavHeader.setImageResource(R.drawable.profiledefault)
@@ -209,6 +223,9 @@ class MainActivity : AppCompatActivity() {
 
                     val newMessage = Message(msgBody,userName, channelId, userAvatar, userColor, id, time)
                     MessageService.messages.add(newMessage)
+
+                    messageAdapter.notifyDataSetChanged()
+                    messageListView.smoothScrollToPosition(messageAdapter.itemCount-1)
                 }
 
             }

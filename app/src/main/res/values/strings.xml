@@ -28,4 +28,7 @@
     <string name="generate_background_color">generate Background Color</string>
     <string name="channel_name">channel name</string>
     <string name="channel_description">channel description</string>
+    <string name="sept_24_20_05">Sept 24, 20:05</string>
+    <string name="in_software_engineering_the_singleton_pattern_is_a_software_design_pattern_that_restricts_the_instantiation_of_a_class_to_one_single_instance_this_is_useful_when_exactly_one_object_is_needed_to_coordinate_actions_across_the_system_the_term_comes_from_the_mathematical_concept_of_a_singleton_critics_consider_the_singleton_to_be_an_anti_pattern_in_that_it_is_frequently_used_in_scenarios_where_it_is_not_beneficial_introduces_unnecessary_restrictions_in_situations_where_a_sole_instance_of_a_class_is_not_actually_required_and_introduces_global_state_into_an_application">In software engineering, the singleton pattern is a software design pattern that restricts the instantiation of a class to one singleinstance. This is useful when exactly one object is needed to coordinate actions across the system. The term comes from the mathematical concept of a singleton. Critics consider the singleton to be an anti-pattern in that it is frequently used in scenarios where it is not beneficial, introduces unnecessary restrictions in situations where a sole instance of a class is not actually required, and introduces global state into an application.</string>
+    <string name="avater">avater</string>
 </resources>
